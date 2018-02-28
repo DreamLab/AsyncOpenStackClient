@@ -1,0 +1,82 @@
+# editor files
+.*.swp
+*.bak
+*~
+/.project
+/.pydevproject
+**/*.orig
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+wheelhouse
+venv*/
+pyvenv*/
+.pytest_cache
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+.coverage
+.tox
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+htmlcov
+report.xml
+
+# Translations
+*.mo
+*.pot
+
+# Complexity
+output/*.html
+output/*/index.html
+
+# Sphinx
+docs/_build
+
+.DS_Store
+*~
+.*.sw[po]
+.build
+.ve
+.env
+.cache
+.pytest
+.bootstrap
+.appveyor.token
+*.bak
+
+# ctags
+tags

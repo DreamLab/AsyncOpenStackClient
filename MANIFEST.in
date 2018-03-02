@@ -1,0 +1,18 @@
+graft docs
+graft src
+graft tests
+
+include Pipfile
+include Pipfile.lock
+
+include CHANGELOG.md
+include README.md
+include LICENSE
+include requirements.txt
+include test-requirements.txt
+
+include tox.ini
+include setup.cfg
+
+global-exclude *.py[cod] __pycache__ *.so *.dylib
+

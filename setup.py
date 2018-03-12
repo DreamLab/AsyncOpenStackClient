@@ -13,13 +13,13 @@ def read(name):
 
 setup(
     name="AsyncOpenStackClient",
-    version="0.1.0",
+    version="0.1.1",
     author='Dreamlab - PaaS KRK',
     author_email='paas-support@dreamlab.pl',
     url='https://github.com/DreamLab/AsyncOpenStackClient',
     description='Basic OpenStack client library using asyncio',
     long_description='%s\n%s' % (
-        read('README.rst'),
+        read('README.md'),
         re.sub(':[a-z]+:`~?(.*?)`', r'``\1``', read('CHANGELOG.md'))
     ),
     packages=find_packages('src'),

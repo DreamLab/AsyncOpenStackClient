@@ -49,7 +49,6 @@ class TestClient(AsyncTestCase):
         client = Client("mock_name", ['mock', 'resource', 'list'], session=session)
         await client.init_api()
 
-        print(mock_api.mock_calls)
         mock_api().assert_called_once_with(
             api_root_url="mock_url",
             headers={"X-Auth-Token": 'mock_token'},

@@ -34,7 +34,6 @@ class TestAuth(AsyncTestCase):
             "x-openstack-request-id": "1234",
             "Content-Type": "application/json",
             "X-Subject-Token": "gAAAAABao"
-
         }
         with aioresponses() as req:
             req.post('auth_url/auth/tokens', payload=body, headers=headers)

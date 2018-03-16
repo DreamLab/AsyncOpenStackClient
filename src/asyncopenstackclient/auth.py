@@ -7,6 +7,9 @@ class AuthModel:
     async def authenticate(self):
         raise NotImplementedError()
 
+    def verify(self):
+        return self.token_expires_at - time() < 3600
+
 
 class AuthPassword:
 
@@ -42,23 +45,25 @@ class AuthPassword:
             }
         }
 
-    def verify(self):
-        return self.token_expires_at - time() < 3600
-
     async def get_token(self):
         async with aiohttp.ClientSession() as session:
             async with session.post(self.auth_url, json=self.auth_dict, headers=self.headers) as response:
                 result = await response.json()
                 return (
-                    response.headers['X-Subject-Token'], mktime(strptime(result['token']['expires_at'],
-                    "%Y-%m-%dT%H:%M:%S.000000Z")), result['token']['catalog']
+                    response.headers['X-Subject-Token'],
+                    mktime(strptime(result['token']['expires_at'], "%Y-%m-%dT%H:%M:%S.000000Z")),
+                    result['token']['catalog']
                 )
 
-    async def get_ednpoint_url(self, endpoint_name):
-        for endpoint in self.endpoints:
-            if endpoint['name'] == endpoint_name:
-                return endpoint['endpoints'][0]['url']
+    def get_endpoint_url(self, endpoint_name, prefered_interface="public"):
+        try:
+            for endpoint in self.endpoints:
+                if endpoint['name'] == endpoint_name:
+                    return [url['url'] for url in endpoint['endpoints'] if url['interface'] == prefered_interface][0]
+        except IndexError:
+            raise ValueError("could not find desired interface")
+        raise ValueError("endpoint %s not found" % endpoint_name)
 
     async def authenticate(self):
-        if self.token is None or self.token_expires_at - time() > 0:
+        if self.token is None or self.token_expires_at - time() < 0:
             self.token, self.token_expires_at, self.endpoints = await self.get_token()

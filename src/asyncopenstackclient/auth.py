@@ -5,13 +5,10 @@ import aiohttp
 class AuthModel:
 
     async def authenticate(self):
-        raise NotImplementedError()
-
-    def verify(self):
-        return self.token_expires_at - time() < 3600
+        raise NotImplementedError
 
 
-class AuthPassword:
+class AuthPassword(AuthModel):
 
     def __init__(self, auth_url, username, password, project_name, user_domain_name, project_domain_name):
         self.auth_url = auth_url + '/auth/tokens'
@@ -45,6 +42,9 @@ class AuthPassword:
             }
         }
 
+    def is_token_valid(self):
+        return self.token_expires_at - time() > 0
+
     async def get_token(self):
         async with aiohttp.ClientSession() as session:
             async with session.post(self.auth_url, json=self.auth_dict, headers=self.headers) as response:
@@ -65,5 +65,5 @@ class AuthPassword:
         raise ValueError("endpoint %s not found" % endpoint_name)
 
     async def authenticate(self):
-        if self.token is None or self.token_expires_at - time() < 0:
+        if self.token is None or self.is_token_valid() is False:
             self.token, self.token_expires_at, self.endpoints = await self.get_token()

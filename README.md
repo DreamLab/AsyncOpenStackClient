@@ -1,3 +1,0 @@
-# AsyncOpenStackClient
-
-## work in progress

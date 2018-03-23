@@ -10,7 +10,7 @@ AsyncOpenstakClient
 Introduction
 ============
 
-The `AsyncOpenStakClient` is rest wrapper to OpenStack API. It provides very raw functionality however, it has a nice abstraction for authetication - session. For method specification go to official OpenStack reference https://docs.openstack.org/queens/api/.
+The `AsyncOpenStakClient` is rest wrapper to OpenStack API. It provides very raw functionality however, it has a nice abstraction for authetication and easy to add new functionalities. For method specification go to official OpenStack reference https://docs.openstack.org/queens/api/.
 
 
 Installation
@@ -29,7 +29,7 @@ Usage
 As mentioned above this is "raw" library, so you must handle `params` and/or `body` and the `response`.
 
 
-::
+.. code-block:: python
 
     from asyncopenstackclient import NovaClient, GlanceClient, AuthPassword
 

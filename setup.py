@@ -28,11 +28,10 @@ setup(
     install_requires=read('requirements.txt').split('\n'),
     zip_safe=False,
     keywords=[
-        'iaas', 'cloud',
-        'openstack', 'nova',
+        'iaas', 'cloud', 'openstack', 'nova', 'glance'
     ],
-    dependency_links=['https://pypi.python.org/pypi'],
     classifiers=[
+        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Operating System :: POSIX',

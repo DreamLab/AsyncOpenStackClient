@@ -19,8 +19,7 @@ setup(
     url='https://github.com/DreamLab/AsyncOpenStackClient',
     description='Basic OpenStack client library using asyncio',
     long_description='%s\n%s' % (
-        read('README.md'),
-        re.sub(':[a-z]+:`~?(.*?)`', r'``\1``', read('CHANGELOG.md'))
+        read('README.rst')
     ),
     packages=find_packages('src'),
     package_dir={'': 'src'},

@@ -78,6 +78,9 @@ Available functions
 
   - images.list()
 
+
+.. include:: CHANGELOG.rst
+
 License
 =======
 

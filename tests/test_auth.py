@@ -40,7 +40,7 @@ class TestAuth(AsyncTestCase):
 
             res = await self.auth.get_token()
 
-            self.assertEqual(res, (headers["X-Subject-Token"], 0, body["token"]["catalog"]))
+            self.assertEqual(res, (headers["X-Subject-Token"], 3600, body["token"]["catalog"]))
 
     def test_get_endpoint_url_existing_endpoint(self):
         self.auth.endpoints = [

@@ -13,7 +13,7 @@ def read(name):
 
 setup(
     name="AsyncOpenStackClient",
-    version="0.2.0",
+    version="0.2.1",
     author='Dreamlab - PaaS KRK',
     author_email='paas-support@dreamlab.pl',
     url='https://github.com/DreamLab/AsyncOpenStackClient',

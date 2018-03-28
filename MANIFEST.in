@@ -4,14 +4,15 @@ graft tests
 include Pipfile
 include Pipfile.lock
 
-include CHANGELOG.md
-include README.md
+include .coveragerc
+
+include CHANGELOG.rst
+include README.rst
 include LICENSE
 include requirements.txt
 include test-requirements.txt
 
-include tox.ini
-include setup.cfg
+include tox.ini .travis.yml
 
 global-exclude *.py[cod] __pycache__ *.so *.dylib
-
+exclude .pytest_cache

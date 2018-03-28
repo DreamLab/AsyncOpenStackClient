@@ -1,5 +1,6 @@
-from time import time, strptime, mktime
 import aiohttp
+from dateutil import parser
+from time import time
 
 
 class AuthModel:
@@ -51,7 +52,7 @@ class AuthPassword(AuthModel):
                 result = await response.json()
                 return (
                     response.headers['X-Subject-Token'],
-                    mktime(strptime(result['token']['expires_at'], "%Y-%m-%dT%H:%M:%S.000000Z")),
+                    parser.parse(result['token']['expires_at']).timestamp(),
                     result['token']['catalog']
                 )
 

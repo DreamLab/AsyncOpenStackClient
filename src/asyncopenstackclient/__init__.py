@@ -1,6 +1,6 @@
-from .client import Client
-from .nova import NovaClient
-from .glance import GlanceClient
-from .auth import AuthPassword
+from .auth import AuthPassword  # noqa
+from .client import Client  # noqa
+from .glance import GlanceClient  # noqa
+from .nova import NovaClient  # noqa
 
 __all__ = ['NovaClient', 'GlanceClient', 'AuthPassword']

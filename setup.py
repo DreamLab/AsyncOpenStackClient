@@ -1,7 +1,7 @@
 import io
 import re
-from setuptools import setup, find_packages
 from os.path import join, dirname, abspath
+from setuptools import setup, find_packages
 
 
 def read(name):
@@ -13,7 +13,7 @@ def read(name):
 
 setup(
     name="AsyncOpenStackClient",
-    version="0.2.0",
+    version="0.2.1",
     author='Dreamlab - PaaS KRK',
     author_email='paas-support@dreamlab.pl',
     url='https://github.com/DreamLab/AsyncOpenStackClient',

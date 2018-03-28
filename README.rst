@@ -3,8 +3,8 @@ AsyncOpenstakClient
 
 |image0|_
 
-.. |image0| image:: https://api.travis-ci.org/dreamlab/asyncopenstackclient.png?branch=master
-.. _image0: https://travis-ci.org/dreamlab/asyncopenstackclient
+.. |image0| image:: https://api.travis-ci.org/DreamLab/AsyncOpenStackClient.png?branch=master
+.. _image0: https://travis-ci.org/DreamLab/AsyncOpenStackClient
 
 
 Introduction

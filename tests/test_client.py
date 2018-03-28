@@ -1,6 +1,6 @@
 from aiounittest import AsyncTestCase, futurized
 from asyncopenstackclient import Client
-from unittest.mock import patch, Mock, call, ANY
+from unittest import mock
 
 
 class TestClient(AsyncTestCase):
@@ -9,7 +9,7 @@ class TestClient(AsyncTestCase):
         pass
 
     def tearDown(self):
-        patch.stopall()
+        mock.patch.stopall()
 
     def test_create_object(self):
         api_name = 'mock_api'
@@ -28,7 +28,7 @@ class TestClient(AsyncTestCase):
             Client('mock_name', 'mock_version', session=None)
 
     async def test_get_credentials(self):
-        session = Mock()
+        session = mock.Mock()
         session.authenticate.return_value = futurized(None)
         session.get_endpoint_url.return_value = futurized("mock_url")
 
@@ -38,13 +38,13 @@ class TestClient(AsyncTestCase):
         self.assertEqual(client.api_url, "mock_url")
 
     async def test_init_api(self):
-        session = Mock()
+        session = mock.Mock()
         session.authenticate.return_value = futurized(None)
         session.get_endpoint_url.return_value = futurized("mock_url")
         session.token = 'mock_token'
-        mock_api = Mock()
+        mock_api = mock.Mock()
 
-        patch('asyncopenstackclient.client.API', new_callable=mock_api).start()
+        mock.patch('asyncopenstackclient.client.API', new_callable=mock_api).start()
 
         client = Client("mock_name", ['mock', 'resource', 'list'], session=session)
         await client.init_api()
@@ -56,7 +56,7 @@ class TestClient(AsyncTestCase):
         )
 
         mock_api()().add_resource.assert_has_calls([
-            call(resource_name='mock', resource_class=ANY),
-            call(resource_name='resource', resource_class=ANY),
-            call(resource_name='list', resource_class=ANY),
+            mock.call(resource_name='mock', resource_class=mock.ANY),
+            mock.call(resource_name='resource', resource_class=mock.ANY),
+            mock.call(resource_name='list', resource_class=mock.ANY),
         ])

@@ -4,8 +4,8 @@ graft tests
 include Pipfile
 include Pipfile.lock
 
-include CHANGELOG.md
-include README.md
+include CHANGELOG.rst
+include README.rst
 include LICENSE
 include requirements.txt
 include test-requirements.txt

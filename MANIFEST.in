@@ -4,6 +4,8 @@ graft tests
 include Pipfile
 include Pipfile.lock
 
+include .coveragerc
+
 include CHANGELOG.rst
 include README.rst
 include LICENSE

@@ -1,5 +1,5 @@
-from time import time, strptime, mktime
 import aiohttp
+from time import time, strptime, mktime
 
 
 class AuthModel:

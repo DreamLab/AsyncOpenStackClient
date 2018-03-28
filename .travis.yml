@@ -1,16 +1,12 @@
 language: python
 sudo: false
 cache: pip
-env:
-  matrix:
-    - TOXENV=check
-    - TOXENV=docs
 matrix:
   include:
-    - python: '3.6'
+    - python: '3.5'
       env:
         - TOXENV=python3-cover,report
-    - python: '3.7'
+    - python: '3.6'
       env:
         - TOXENV=python3-cover,report
 before_install:

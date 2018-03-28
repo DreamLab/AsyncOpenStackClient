@@ -1,7 +1,7 @@
-from unittest.mock import patch
-from aiounittest import AsyncTestCase, futurized
 from aioresponses import aioresponses
+from aiounittest import AsyncTestCase, futurized
 from asyncopenstackclient import AuthPassword
+from unittest.mock import patch
 
 
 class TestAuth(AsyncTestCase):

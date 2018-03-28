@@ -1,6 +1,6 @@
-from unittest.mock import patch, Mock, call, ANY
 from aiounittest import AsyncTestCase, futurized
 from asyncopenstackclient import Client
+from unittest.mock import patch, Mock, call, ANY
 
 
 class TestClient(AsyncTestCase):

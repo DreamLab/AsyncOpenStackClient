@@ -1,7 +1,7 @@
 import io
 import re
-from setuptools import setup, find_packages
 from os.path import join, dirname, abspath
+from setuptools import setup, find_packages
 
 
 def read(name):

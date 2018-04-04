@@ -24,4 +24,4 @@ class Client:
 
     async def get_credentials(self):
         await self.session.authenticate()
-        self.api_url = await self.session.get_endpoint_url(self.api_name)
+        self.api_url = self.session.get_endpoint_url(self.api_name)

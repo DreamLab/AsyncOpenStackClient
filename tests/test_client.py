@@ -30,7 +30,7 @@ class TestClient(AsyncTestCase):
     async def test_get_credentials(self):
         session = mock.Mock()
         session.authenticate.return_value = futurized(None)
-        session.get_endpoint_url.return_value = futurized("mock_url")
+        session.get_endpoint_url.return_value = "mock_url"
 
         client = Client("mock_name", "mock_version", session=session)
         await client.get_credentials()
@@ -40,7 +40,7 @@ class TestClient(AsyncTestCase):
     async def test_init_api(self):
         session = mock.Mock()
         session.authenticate.return_value = futurized(None)
-        session.get_endpoint_url.return_value = futurized("mock_url")
+        session.get_endpoint_url.return_value = "mock_url"
         session.token = 'mock_token'
         mock_api = mock.Mock()
 

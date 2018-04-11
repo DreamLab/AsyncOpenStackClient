@@ -10,8 +10,9 @@ class Client:
         self.api_name = api_name
         self.resources = resources
         self.session = session
-        self.custom_api_url = api_url
-        self.catalog_api_url = None
+        self._custom_api_url = api_url
+        self._catalog_api_url = None
+        self._current_api_url = None
         if self.session is None:
             raise AttributeError("provided session object is None, probably auth error?")
 
@@ -27,11 +28,11 @@ class Client:
 
     @property
     def api_url(self):
-        return self.custom_api_url or self.catalog_api_url
+        return self._custom_api_url or self._current_api_url or self._catalog_api_url
 
     async def get_current_version_api_url(self, url):
         async with aiohttp.ClientSession() as session:
-            async with session.get(self.catalog_api_url) as response:
+            async with session.get(url) as response:
                 versions = await response.json()
                 return [version["links"][0]["href"] for version in versions["versions"] if version["status"] == "CURRENT"][0]
 
@@ -47,7 +48,7 @@ class Client:
         parts = urlparse(url)
         if parts.path:
             # preasumly full url with api or/and project id
-            self.catalog_api_url = url
+            self._catalog_api_url = url
         else:
             # base url so we need to determine full url with version
-            self.catalog_api_url = await self.get_current_version_api_url(url)
+            self._current_api_url = await self.get_current_version_api_url(url)

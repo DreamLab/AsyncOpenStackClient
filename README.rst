@@ -40,8 +40,13 @@ As mentioned above this is "raw" library, so you must handle `params` and/or `bo
         user_domain_name='default',
         project_domain_name='foo.bar'
     )
-    nova = NovaClient(API_VERSION, session=auth)
+    nova = NovaClient(session=auth)
     glance = GlanceClient(session=auth)
+
+    # api url for each service will be taken from catalog,
+    # but you may pass `api_url` param to force custom url eg.
+    # nova = NovaClient(session=auth, api_url='http://my-local-nova:9876/v2/')
+
     await nova.init_api()
     await glance.init_api()
 

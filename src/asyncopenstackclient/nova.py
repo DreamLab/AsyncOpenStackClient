@@ -2,8 +2,8 @@ from .client import Client
 
 
 class NovaClient(Client):
-    def __init__(self, api_version=None, session=None):
-        super().__init__('nova', ['flavors', 'servers'], api_version, session)
+    def __init__(self, session=None, api_url=None):
+        super().__init__('nova', ['flavors', 'servers'], session, api_url)
 
     async def init_api(self):
         await super().init_api()

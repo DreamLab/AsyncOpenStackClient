@@ -1,14 +1,17 @@
+import aiohttp
 from simple_rest_client.api import API
 from simple_rest_client.resource import AsyncResource
+from urllib.parse import urlparse
 
 
 class Client:
 
-    def __init__(self, api_name, resources, api_version=None, session=None):
-        self.api_version = api_version
+    def __init__(self, api_name, resources, session=None, api_url=None):
         self.api_name = api_name
         self.resources = resources
         self.session = session
+        self.custom_api_url = api_url
+        self.catalog_api_url = None
         if self.session is None:
             raise AttributeError("provided session object is None, probably auth error?")
 
@@ -22,6 +25,29 @@ class Client:
         for resource in self.resources:
             self.api.add_resource(resource_name=resource, resource_class=AsyncResource)
 
+    @property
+    def api_url(self):
+        return self.custom_api_url or self.catalog_api_url
+
+    async def get_current_version_api_url(self, url):
+        async with aiohttp.ClientSession() as session:
+            async with session.get(self.catalog_api_url) as response:
+                versions = await response.json()
+                return [version["links"][0]["href"] for version in versions["versions"] if version["status"] == "CURRENT"][0]
+
     async def get_credentials(self):
         await self.session.authenticate()
-        self.api_url = self.session.get_endpoint_url(self.api_name)
+
+        # api_url is provided, don't bother to determine
+        if self.api_url:
+            return
+
+        # take url from catalog
+        url = self.session.get_endpoint_url(self.api_name)
+        parts = urlparse(url)
+        if parts.path:
+            # preasumly full url with api or/and project id
+            self.catalog_api_url = url
+        else:
+            # base url so we need to determine full url with version
+            self.catalog_api_url = await self.get_current_version_api_url(url)

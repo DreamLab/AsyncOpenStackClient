@@ -34,7 +34,7 @@ class TestClient(AsyncTestCase):
 
         client = Client('glance', ['some_res'], session=self.mock_sess)
 
-        # this is not good practice but the simplest one
+        # this is not a good practice but the simplest one
         client.get_current_version_api_url = mock.Mock(return_value=futurized('http://blah'))
 
         await client.get_credentials()
@@ -48,7 +48,7 @@ class TestClient(AsyncTestCase):
 
         client = Client('glance', ['some_res'], session=self.mock_sess)
 
-        # this is not good practice but the simplest one
+        # this is not a good practice but the simplest one
         client.get_current_version_api_url = mock.Mock(return_value=futurized('http://blah'))
 
         await client.get_credentials()

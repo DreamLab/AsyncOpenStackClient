@@ -1,3 +1,4 @@
+import os
 from aioresponses import aioresponses
 from aiounittest import AsyncTestCase, futurized
 from asyncopenstackclient import AuthPassword
@@ -7,16 +8,43 @@ from unittest.mock import patch
 class TestAuth(AsyncTestCase):
 
     def setUp(self):
-        self.auth_args = ('auth_url', 'username', 'password', 'mock_project_name',
-                          'mock_user_domain_name', 'mock_project_domain_name')
+        self.auth_args = ('http://url', 'm_user', 'm_pass', 'm_project',
+                          'm_user_domain', 'm_project_domain')
         self.auth = AuthPassword(*self.auth_args)
 
     def tearDown(self):
         patch.stopall()
+        for name in list(os.environ.keys()):
+            if name.startswith('OS_'):
+                del os.environ[name]
 
     async def test_create_object(self):
-        self.assertTrue(self.auth.auth_url.endswith("/auth/tokens"))
+        expected_payload = {'auth': {
+            'identity': {'methods': ['password'], 'password': {'user': {
+                'domain': {'name': 'm_user_domain'},
+                'name': 'm_user', 'password': 'm_pass'
+            }}},
+            'scope': {'project': {'domain': {'name': 'm_project_domain'}, 'name': 'm_project'}}
+        }}
+        self.assertEqual(self.auth._auth_payload, expected_payload)
+        self.assertEqual(self.auth._auth_endpoint, 'http://url/auth/tokens')
         self.assertTrue('Content-Type' in self.auth.headers)
+
+    async def test_create_object_use_environ(self):
+        expected_payload = {'auth': {
+            'identity': {'methods': ['password'], 'password': {'user': {'domain': {'name': 'udm'}, 'name': 'uuu', 'password': 'ppp'}}},
+            'scope': {'project': {'domain': {'name': 'udm'}, 'name': 'prj'}}
+        }}
+        os.environ['OS_AUTH_URL'] = 'https://keystone'
+        os.environ['OS_PASSWORD'] = 'ppp'
+        os.environ['OS_USERNAME'] = 'uuu'
+        os.environ['OS_USER_DOMAIN_NAME'] = 'udm'
+        os.environ['OS_PROJECT_NAME'] = 'prj'
+
+        auth = AuthPassword()
+        self.assertEqual(auth._auth_payload, expected_payload)
+        self.assertEqual(auth._auth_endpoint, 'https://keystone/auth/tokens')
+        self.assertTrue('Content-Type' in auth.headers)
 
     async def test_get_token(self):
         body = {
@@ -36,7 +64,7 @@ class TestAuth(AsyncTestCase):
             "X-Subject-Token": "gAAAAABao"
         }
         with aioresponses() as req:
-            req.post('auth_url/auth/tokens', payload=body, headers=headers)
+            req.post('http://url/auth/tokens', payload=body, headers=headers)
 
             res = await self.auth.get_token()
 

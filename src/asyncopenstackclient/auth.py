@@ -7,6 +7,16 @@ from urllib.parse import urljoin
 
 class AuthModel:
 
+    def __init__(self):
+        self._auth_url = None
+        self._username = None
+        self._password = None
+        self._user_domain_name = None
+        self._project_domain_name = None
+        self._project_id = None
+        self._project_name = None
+        self._region_name = None
+
     async def authenticate(self):
         raise NotImplementedError
 
@@ -46,6 +56,7 @@ class AuthModel:
 class AuthPassword(AuthModel):
 
     def __init__(self, auth_url=None, username=None, password=None, project_name=None, user_domain_name=None, project_domain_name=None):
+        super().__init__()
         self._auth_url = auth_url
         self._username = username
         self._password = password

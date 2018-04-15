@@ -1,4 +1,5 @@
 import os
+from .utils import Environment
 from aioresponses import aioresponses
 from aiounittest import AsyncTestCase, futurized
 from asyncopenstackclient import AuthPassword
@@ -35,13 +36,14 @@ class TestAuth(AsyncTestCase):
             'identity': {'methods': ['password'], 'password': {'user': {'domain': {'name': 'udm'}, 'name': 'uuu', 'password': 'ppp'}}},
             'scope': {'project': {'domain': {'name': 'udm'}, 'name': 'prj'}}
         }}
-        os.environ['OS_AUTH_URL'] = 'https://keystone'
-        os.environ['OS_PASSWORD'] = 'ppp'
-        os.environ['OS_USERNAME'] = 'uuu'
-        os.environ['OS_USER_DOMAIN_NAME'] = 'udm'
-        os.environ['OS_PROJECT_NAME'] = 'prj'
+        env = {
+            'OS_AUTH_URL': 'https://keystone',
+            'OS_PASSWORD': 'ppp', 'OS_USERNAME': 'uuu',
+            'OS_USER_DOMAIN_NAME': 'udm', 'OS_PROJECT_NAME': 'prj'
+        }
 
-        auth = AuthPassword()
+        with Environment(env):
+            auth = AuthPassword()
         self.assertEqual(auth._auth_payload, expected_payload)
         self.assertEqual(auth._auth_endpoint, 'https://keystone/auth/tokens')
         self.assertTrue('Content-Type' in auth.headers)

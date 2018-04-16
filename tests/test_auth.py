@@ -1,5 +1,4 @@
 import os
-from .utils import Environment
 from aioresponses import aioresponses
 from aiounittest import AsyncTestCase, futurized
 from asyncopenstackclient import AuthPassword
@@ -42,7 +41,7 @@ class TestAuth(AsyncTestCase):
             'OS_USER_DOMAIN_NAME': 'udm', 'OS_PROJECT_NAME': 'prj'
         }
 
-        with Environment(env):
+        with patch.dict('os.environ', env, clear=True):
             auth = AuthPassword()
         self.assertEqual(auth._auth_payload, expected_payload)
         self.assertEqual(auth._auth_endpoint, 'https://keystone/auth/tokens')

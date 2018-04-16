@@ -1,43 +1,95 @@
 import aiohttp
+import os
 from dateutil import parser
 from time import time
+from urllib.parse import urljoin
 
 
 class AuthModel:
 
+    def __init__(self):
+        self._auth_url = None
+        self._username = None
+        self._password = None
+        self._user_domain_name = None
+        self._project_domain_name = None
+        self._project_id = None
+        self._project_name = None
+        self._region_name = None
+
     async def authenticate(self):
         raise NotImplementedError
+
+    @property
+    def os_auth_url(self):
+        return self._auth_url or os.environ.get('OS_AUTH_URL')
+
+    @property
+    def os_username(self):
+        return self._username or os.environ.get('OS_USERNAME')
+
+    @property
+    def os_password(self):
+        return self._password or os.environ.get('OS_PASSWORD')
+
+    @property
+    def os_user_domain_name(self):
+        return self._user_domain_name or os.environ.get('OS_USER_DOMAIN_NAME')
+
+    @property
+    def os_project_domain_name(self):
+        return self._project_domain_name or self.os_user_domain_name
+
+    @property
+    def os_project_id(self):
+        return self._project_id or os.environ.get('OS_PROJECT_ID')
+
+    @property
+    def os_project_name(self):
+        return self._project_name or os.environ.get('OS_PROJECT_NAME')
+
+    @property
+    def os_region_name(self):
+        return self._region_name or os.environ.get('OS_REGION_NAME')
 
 
 class AuthPassword(AuthModel):
 
-    def __init__(self, auth_url, username, password, project_name, user_domain_name, project_domain_name):
-        self.auth_url = auth_url + '/auth/tokens'
+    def __init__(self, auth_url=None, username=None, password=None, project_name=None, user_domain_name=None, project_domain_name=None):
+        super().__init__()
+        self._auth_url = auth_url
+        self._username = username
+        self._password = password
+        self._project_name = project_name
+        self._user_domain_name = user_domain_name
+        self._project_domain_name = project_domain_name
+
+        self._auth_endpoint = urljoin(self.os_auth_url, '/auth/tokens')
         self.token = None
         self.token_expires_at = 0
         self.headers = {
             'Content-Type': 'application/json'
         }
-        self.auth_dict = {
+        self._auth_payload = {
             'auth': {
                 'identity': {
                     'methods': ['password'],
                     'password': {
                         'user': {
                             'domain': {
-                                'name': user_domain_name
+                                'name': self.os_user_domain_name
                             },
-                            'name': username,
-                            'password': password
+                            'name': self.os_username,
+                            'password': self.os_password
                         }
                     }
                 },
                 'scope': {
                     "project": {
                         "domain": {
-                            "name": project_domain_name
+                            "name": self.os_project_domain_name
                         },
-                        "name": project_name
+                        "name": self.os_project_name
                     }
                 }
             }
@@ -48,7 +100,7 @@ class AuthPassword(AuthModel):
 
     async def get_token(self):
         async with aiohttp.ClientSession() as session:
-            async with session.post(self.auth_url, json=self.auth_dict, headers=self.headers) as response:
+            async with session.post(self._auth_endpoint, json=self._auth_payload, headers=self.headers) as response:
                 result = await response.json()
                 return (
                     response.headers['X-Subject-Token'],

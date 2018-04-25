@@ -2,7 +2,6 @@ import aiohttp
 import os
 from dateutil import parser
 from time import time
-from urllib.parse import urljoin
 
 
 class AuthModel:
@@ -64,7 +63,7 @@ class AuthPassword(AuthModel):
         self._user_domain_name = user_domain_name
         self._project_domain_name = project_domain_name
 
-        self._auth_endpoint = urljoin(self.os_auth_url, '/auth/tokens')
+        self._auth_endpoint = self.os_auth_url + '/auth/tokens'
         self.token = None
         self.token_expires_at = 0
         self.headers = {

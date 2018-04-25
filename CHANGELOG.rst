@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.4.1 (2018-04-25)
+------------------
+
+* Bugifx: invalid concat auth_url with urljoin
+
+
 0.4.0 (2018-04-16)
 ------------------
 

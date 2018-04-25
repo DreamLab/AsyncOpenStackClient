@@ -36,7 +36,7 @@ class TestAuth(AsyncTestCase):
             'scope': {'project': {'domain': {'name': 'udm'}, 'name': 'prj'}}
         }}
         env = {
-            'OS_AUTH_URL': 'https://keystone',
+            'OS_AUTH_URL': 'https://keystone/v3',
             'OS_PASSWORD': 'ppp', 'OS_USERNAME': 'uuu',
             'OS_USER_DOMAIN_NAME': 'udm', 'OS_PROJECT_NAME': 'prj'
         }
@@ -44,7 +44,7 @@ class TestAuth(AsyncTestCase):
         with patch.dict('os.environ', env, clear=True):
             auth = AuthPassword()
         self.assertEqual(auth._auth_payload, expected_payload)
-        self.assertEqual(auth._auth_endpoint, 'https://keystone/auth/tokens')
+        self.assertEqual(auth._auth_endpoint, 'https://keystone/v3/auth/tokens')
         self.assertTrue('Content-Type' in auth.headers)
 
     async def test_get_token(self):

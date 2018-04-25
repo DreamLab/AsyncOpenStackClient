@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.5.0 (2018-04-25)
+------------------
+
+* Feature: partial support for server metadata usage
+
+
 0.4.1 (2018-04-25)
 ------------------
 

@@ -1,4 +1,4 @@
-AsyncOpenstakClient
+AsyncOpenStackClient
 ===================
 
 |image0|_
@@ -10,7 +10,7 @@ AsyncOpenstakClient
 Introduction
 ============
 
-The `AsyncOpenStakClient` is rest wrapper to OpenStack API. It provides very raw functionality however, it has a nice abstraction for authetication. For method specification go to official OpenStack reference https://docs.openstack.org/queens/api/.
+The `AsyncOpenStackClient` is a rest wrapper for the OpenStack API. It provides very raw functionality; however, it has a nice abstraction for authetication. For method specification, see the official OpenStack documentation: https://docs.openstack.org/queens/api/.
 
 
 Installation
@@ -26,7 +26,7 @@ Use pip:
 Usage
 =====
 
-As mentioned above this is "raw" library, so you must handle `params` and/or `body` and the `response`.
+As mentioned above, this is a "raw" library, so you must handle `params` and/or `body` and the `response`.
 
 
 .. code-block:: python

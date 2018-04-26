@@ -10,7 +10,7 @@ AsyncOpenStackClient
 Introduction
 ============
 
-The `AsyncOpenStackClient` is rest wrapper to OpenStack API. It provides very raw functionality however, it has a nice abstraction for authetication. For method specification go to official OpenStack reference https://docs.openstack.org/queens/api/.
+The `AsyncOpenStackClient` is a rest wrapper for the OpenStack API. It provides very raw functionality; however, it has a nice abstraction for authetication. For method specification, see the official OpenStack documentation: https://docs.openstack.org/queens/api/.
 
 
 Installation

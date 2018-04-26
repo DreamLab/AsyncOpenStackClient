@@ -26,7 +26,7 @@ Use pip:
 Usage
 =====
 
-As mentioned above this is "raw" library, so you must handle `params` and/or `body` and the `response`.
+As mentioned above, this is a "raw" library, so you must handle `params` and/or `body` and the `response`.
 
 
 .. code-block:: python

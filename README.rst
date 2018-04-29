@@ -33,6 +33,9 @@ As mentioned above, this is a "raw" library, so you must handle `params` and/or 
 
     from asyncopenstackclient import NovaClient, GlanceClient, AuthPassword
 
+    # you can either pass credentials explicitly (as shown below)
+    # or use enviormental variables from OpenStack RC file
+    # https://docs.openstack.org/mitaka/cli-reference/common/cli_set_environment_variables_using_openstack_rc.html
     auth = AuthPassword(
         auth_url='https://keystone:5999/v3'
         username='USER', password='PASS',
@@ -78,6 +81,10 @@ Available functions
   - servers.create(body)
   - servers.force_delete(id)
   - flavors.list()
+  - metadata.get(server_id)
+  - metadata.set(server_id)
+  - metadata.get_item(server_id, item_name)
+  - metadata.set_item(server_id, item_name)
 
 - Glance (https://developer.openstack.org/api-ref/image/v2/index.html)
 

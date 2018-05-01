@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.6.0 (2018-05-01)
+------------------
+
+* Feature: wrap requests with Resource/Method proxy
+
+
 0.5.1 (2018-04-29)
 ------------------
 

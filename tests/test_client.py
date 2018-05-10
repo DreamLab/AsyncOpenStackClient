@@ -41,7 +41,7 @@ class TestClient(AsyncTestCase):
 
         client.get_current_version_api_url.assert_not_called()
         self.mock_sess.get_endpoint_url.assert_called_once_with('glance')
-        self.assertEqual(client.api_url, 'http://glance.a2.iaas:9292/v2')
+        self.assertEqual(client.api_url, 'http://glance.a2.iaas:9292/v2/')
 
     async def test_get_credentials_base_api_url_only_from_catalog(self):
         self.mock_sess.get_endpoint_url.return_value = 'http://glance.a2.iaas:9292'
@@ -55,7 +55,7 @@ class TestClient(AsyncTestCase):
 
         self.mock_sess.get_endpoint_url.assert_called_once_with('glance')
         client.get_current_version_api_url.assert_called_once_with('http://glance.a2.iaas:9292')
-        self.assertEqual(client.api_url, 'http://blah')
+        self.assertEqual(client.api_url, 'http://blah/')
 
     async def test_custom_api_url(self):
         client = Client('mock_name', 'some_res', session=self.mock_sess, api_url="http://my-api-url/")
@@ -72,7 +72,7 @@ class TestClient(AsyncTestCase):
         await client.init_api()
 
         mock_api().assert_called_once_with(
-            api_root_url='mock_url',
+            api_root_url='mock_url/',
             headers={'X-Auth-Token': 'mock_token'},
             json_encode_body=True
         )

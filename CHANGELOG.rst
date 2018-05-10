@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.5.2 (2018-05-10)
+------------------
+
+* Bugfix: adding slash at the end of api_root_url
+
 0.5.1 (2018-04-29)
 ------------------
 

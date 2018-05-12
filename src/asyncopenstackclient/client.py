@@ -30,7 +30,10 @@ class Client:
 
     @property
     def api_url(self):
-        return self._custom_api_url or self._current_api_url or self._catalog_api_url
+        api_url = self._custom_api_url or self._current_api_url or self._catalog_api_url
+        if api_url and not api_url.endswith('/'):
+            api_url += '/'
+        return api_url
 
     async def get_current_version_api_url(self, url):
         async with aiohttp.ClientSession() as session:

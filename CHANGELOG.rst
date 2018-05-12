@@ -1,10 +1,16 @@
 Changelog
 =========
 
-0.6.0 (2018-05-01)
+0.6.0 (2018-05-12)
 ------------------
 
 * Feature: wrap requests with Resource/Method proxy
+
+
+0.5.2 (2018-05-10)
+------------------
+
+* Bugfix: adding slash at the end of api_root_url
 
 
 0.5.1 (2018-04-29)

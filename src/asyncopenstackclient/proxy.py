@@ -16,9 +16,6 @@ class MethodProxy:
         self.method = method
 
     def __call__(self, *args, **kwargs):
-        return self.__await__(*args, **kwargs)
-
-    def __await__(self, *args, **kwargs):
         resource = getattr(self.api, self.resource)
         method = getattr(resource, self.method)
         if resource.actions[self.method]['method'] in ('GET',):

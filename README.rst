@@ -10,7 +10,7 @@ AsyncOpenStackClient
 Introduction
 ============
 
-The `AsyncOpenStackClient` is a rest wrapper for the OpenStack API. It provides very raw functionality; however, it has a nice abstraction for authentication. For method specification, see the official OpenStack documentation: https://docs.openstack.org/queens/api/.
+The `AsyncOpenStackClient` is a asynchronous rest wrapper for the OpenStack API. It provides a nice abstraction for authentication. For method specification, see the official OpenStack documentation: https://docs.openstack.org/queens/api/.
 
 
 Installation
@@ -25,9 +25,6 @@ Use pip:
 
 Usage
 =====
-
-As mentioned above, this is a "raw" library, so you must handle `params` and/or `body` and the `response`.
-
 
 .. code-block:: python
 
@@ -54,21 +51,19 @@ As mentioned above, this is a "raw" library, so you must handle `params` and/or 
     await glance.init_api()
 
 
-    servers = await nova.api.servers.list(params={'name': 'testvm'})
-    vm = await nova.api.servers.get(id)
+    servers = await nova.servers.list(name='testvm')
+    vm = await nova.servers.get(server_id)
 
 
-    body = {
-        "server": {
-            "name": 'some_name',
-            "flavorRef": 'flavor_id',
-            "imageRef": 'image_id',
-            "security_groups": [{'name': 'group1'}, {'name': 'group2'}]
-            "user_data": base64.b64encode(userdata).decode('utf-8')
-        }
+    specs = {
+        "name": 'some_name',
+        "flavorRef": 'flavor_id',
+        "imageRef": 'image_id',
+        "security_groups": [{'name': 'group1'}, {'name': 'group2'}]
+        "user_data": base64.b64encode(userdata).decode('utf-8')
     }
-    response = await nova.api.servers.create(body=body)
-    print(response.body)
+    response = await nova.servers.create(server=specs)
+    print(response)
 
 
 Available functions
@@ -76,15 +71,15 @@ Available functions
 
 - Nova (https://developer.openstack.org/api-ref/compute)
 
-  - servers.list(params)  # params optional
+  - servers.list(optional=filter)  # params optional
   - servers.get(id)
-  - servers.create(body)
+  - servers.create(server=server_spec)
   - servers.force_delete(id)
   - flavors.list()
   - metadata.get(server_id)
-  - metadata.set(server_id)
+  - metadata.set(server_id, meta=meta_spec)
   - metadata.get_item(server_id, item_name)
-  - metadata.set_item(server_id, item_name)
+  - metadata.set_item(server_id, item_name, meta=meta_spec)
 
 - Glance (https://developer.openstack.org/api-ref/image/v2/index.html)
 

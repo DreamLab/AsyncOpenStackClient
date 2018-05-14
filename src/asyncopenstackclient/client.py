@@ -3,6 +3,8 @@ from simple_rest_client.api import API
 from simple_rest_client.resource import AsyncResource
 from urllib.parse import urlparse
 
+from .proxy import ResourceProxy
+
 
 class Client:
 
@@ -55,3 +57,6 @@ class Client:
         else:
             # base url so we need to determine full url with version
             self._current_api_url = await self.get_current_version_api_url(url)
+
+    def __getattr__(self, name):
+        return ResourceProxy(self.api, name)

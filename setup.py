@@ -13,7 +13,7 @@ def read(name):
 
 setup(
     name="AsyncOpenStackClient",
-    version="0.5.2",
+    version="0.6.0",
     author='Dreamlab - PaaS KRK',
     author_email='paas-support@dreamlab.pl',
     url='https://github.com/DreamLab/AsyncOpenStackClient',
@@ -28,7 +28,7 @@ setup(
     install_requires=read('requirements.txt').split('\n'),
     zip_safe=False,
     keywords=[
-        'iaas', 'cloud', 'openstack', 'nova', 'glance'
+        'iaas', 'cloud', 'openstack', 'nova', 'glance', 'async'
     ],
     classifiers=[
         'Programming Language :: Python :: 3.5',

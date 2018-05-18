@@ -1,9 +1,8 @@
 import aiohttp
+from .proxy import ResourceProxy
 from simple_rest_client.api import API
 from simple_rest_client.resource import AsyncResource
 from urllib.parse import urlparse
-
-from .proxy import ResourceProxy
 
 
 class Client:
@@ -15,6 +14,7 @@ class Client:
         self._custom_api_url = api_url
         self._catalog_api_url = None
         self._current_api_url = None
+        self.api = None
         if self.session is None:
             raise AttributeError("provided session object is None, probably auth error?")
 

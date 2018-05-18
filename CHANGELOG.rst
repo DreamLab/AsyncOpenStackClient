@@ -4,6 +4,12 @@ Changelog
 0.6.0 (2018-05-12)
 ------------------
 
+* Bugfix: initialize property (api) in Client to get some meaningful error instead of "recursion limit reached".
+
+
+0.6.0 (2018-05-12)
+------------------
+
 * Feature: wrap requests with Resource/Method proxy
 
 

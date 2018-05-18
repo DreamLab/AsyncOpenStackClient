@@ -4,7 +4,7 @@ Changelog
 0.6.0 (2018-05-12)
 ------------------
 
-* Bugfix: initial field (api) in Client to get some meaningful error instead of "recursion limit reached".
+* Bugfix: initialize property (api) in Client to get some meaningful error instead of "recursion limit reached".
 
 
 0.6.0 (2018-05-12)

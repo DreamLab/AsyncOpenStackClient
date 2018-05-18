@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.6.1 (2018-05-18)
+0.6.2 (2018-05-18)
 ------------------
 
 * Bugfix: initialize property (api) in Client to get some meaningful error instead of "recursion limit reached".

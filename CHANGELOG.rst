@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.6.3 (2018-06-13)
+------------------
+
+* Feature: adjustable request timeout, default is 60s now
+
+
 0.6.2 (2018-05-18)
 ------------------
 

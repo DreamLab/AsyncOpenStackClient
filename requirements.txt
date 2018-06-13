@@ -1,4 +1,4 @@
 aiohttp>=3
 simplejson==3.13.2
-simple-rest-client==0.5.1
+simple-rest-client==0.5.2
 python-dateutil==2.7.2

@@ -5,8 +5,8 @@ class NovaClient(Client):
     def __init__(self, session=None, api_url=None):
         super().__init__('nova', ['flavors', 'servers', 'metadata'], session, api_url)
 
-    async def init_api(self):
-        await super().init_api()
+    async def init_api(self, timeout=60):
+        await super().init_api(timeout)
         self.api.servers.actions["force_delete"] = {"method": "DELETE", "url": "servers/{}"}
         self.api.servers.actions["get"] = {"method": "GET", "url": "servers/{}"}
         self.api.servers.actions["list"] = {"method": "GET", "url": "servers/detail"}

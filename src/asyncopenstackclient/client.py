@@ -18,12 +18,13 @@ class Client:
         if self.session is None:
             raise AttributeError("provided session object is None, probably auth error?")
 
-    async def init_api(self):
+    async def init_api(self, timeout=60):
         await self.get_credentials()
         self.api = API(
             api_root_url=self.api_url,
             headers={'X-Auth-Token': self.session.token},
-            json_encode_body=True
+            json_encode_body=True,
+            timeout=timeout
         )
         for resource in self.resources:
             self.api.add_resource(resource_name=resource, resource_class=AsyncResource)

@@ -68,13 +68,16 @@ class TestClient(AsyncTestCase):
         mock_api = mock.Mock()
         mock.patch('asyncopenstackclient.client.API', new_callable=mock_api).start()
 
+        client_timeout = 30
+
         client = Client('mock_name', ['mock', 'resource', 'list'], session=self.mock_sess)
-        await client.init_api()
+        await client.init_api(timeout=client_timeout)
 
         mock_api().assert_called_once_with(
             api_root_url='mock_url/',
             headers={'X-Auth-Token': 'mock_token'},
-            json_encode_body=True
+            json_encode_body=True,
+            timeout=client_timeout
         )
 
         mock_api()().add_resource.assert_has_calls([

@@ -75,7 +75,10 @@ class TestClient(AsyncTestCase):
 
         mock_api().assert_called_once_with(
             api_root_url='mock_url/',
-            headers={'X-Auth-Token': 'mock_token'},
+            headers={'X-Auth-Token': 'mock_token',
+                     'Accept': 'application/json',
+                     'Content-Type': 'application/json'
+                     },
             json_encode_body=True,
             timeout=client_timeout
         )

@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.7.0 (2018-06-15)
+------------------
+
+* Feature: Cinder implementation
+* Bugfix: typo fixes
+
 0.6.3 (2018-06-13)
 ------------------
 

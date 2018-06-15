@@ -1,10 +1,14 @@
 AsyncOpenStackClient
 ====================
 
-|image0|_
+|image0|_ |image1|_
 
 .. |image0| image:: https://api.travis-ci.org/DreamLab/AsyncOpenStackClient.png?branch=master
 .. _image0: https://travis-ci.org/DreamLab/AsyncOpenStackClient
+
+.. |image1| image:: https://badge.fury.io/py/AsyncOpenStackClient.svg
+.. _image1: https://badge.fury.io/py/AsyncOpenStackClient
+
 
 
 Introduction

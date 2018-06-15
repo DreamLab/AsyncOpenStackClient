@@ -28,7 +28,7 @@ Usage
 
 .. code-block:: python
 
-    from asyncopenstackclient import NovaClient, GlanceClient, AuthPassword
+    from asyncopenstackclient import NovaClient, GlanceClient, CinderClient, AuthPassword
 
     # you can either pass credentials explicitly (as shown below)
     # or use enviormental variables from OpenStack RC file
@@ -42,6 +42,7 @@ Usage
     )
     nova = NovaClient(session=auth)
     glance = GlanceClient(session=auth)
+    cinder = CinderClient(session=auth)
 
     # api url for each service will be taken from catalog,
     # but you may pass `api_url` param to force custom url eg.
@@ -49,6 +50,7 @@ Usage
 
     await nova.init_api()
     await glance.init_api()
+    await cinder.init_api()
 
 
     servers = await nova.servers.list(name='testvm')
@@ -65,6 +67,12 @@ Usage
     response = await nova.servers.create(server=specs)
     print(response)
 
+    volume = {"size": 200,
+              "imageRef": "image_id",
+              "name": "some_name"}
+
+    response = await cinder.volumes.create(volume=volume)
+    print(response)
 
 Available functions
 -------------------
@@ -84,6 +92,13 @@ Available functions
 - Glance (https://developer.openstack.org/api-ref/image/v2/index.html)
 
   - images.list()
+
+- Cinder (https://developer.openstack.org/api-ref/block-storage/v3/index.html)
+
+  - volumes.list(optional=filter)  # params optional
+  - volumes.get(id)
+  - volumes.create(volume=volume_spec)
+  - volumes.force_delete(id)
 
 
 License

@@ -22,7 +22,10 @@ class Client:
         await self.get_credentials()
         self.api = API(
             api_root_url=self.api_url,
-            headers={'X-Auth-Token': self.session.token},
+            headers={'X-Auth-Token': self.session.token,
+                     'Accept': 'application/json',
+                     'Content-Type': 'application/json'
+                     },
             json_encode_body=True,
             timeout=timeout
         )

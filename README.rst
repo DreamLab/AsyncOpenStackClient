@@ -60,6 +60,9 @@ Usage
     servers = await nova.servers.list(name='testvm')
     vm = await nova.servers.get(server_id)
 
+    action_spec = {'os-stop': None}
+    await nova.servers.run_action(server_id, **action_spec)
+
 
     specs = {
         "name": 'some_name',
@@ -87,6 +90,7 @@ Available functions
   - servers.get(id)
   - servers.create(server=server_spec)
   - servers.force_delete(id)
+  - servers.run_action(id, action=action_spec)
   - flavors.list()
   - metadata.get(server_id)
   - metadata.set(server_id, meta=meta_spec)

@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.8.0 (2018-08-19)
+------------------
+
+* Feature: another part of compute API - run an action on server
+* Feature: CD configuration
+
 0.7.0 (2018-06-15)
 ------------------
 

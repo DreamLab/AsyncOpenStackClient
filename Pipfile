@@ -14,7 +14,8 @@ name = "pypi"
 tox = "*"
 aiohttp = "*"
 simple-rest-client = "*"
-
+python-dateutil = "*"
+simplejson = "*"
 
 [requires]
 

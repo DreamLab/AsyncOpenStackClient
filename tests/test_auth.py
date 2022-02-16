@@ -2,7 +2,7 @@ import os
 from aioresponses import aioresponses
 from aiounittest import AsyncTestCase, futurized
 from asyncopenstackclient import AuthPassword
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 
 class TestAuth(AsyncTestCase):
@@ -107,7 +107,8 @@ class TestAuth(AsyncTestCase):
             1100
         ]
 
-        patch('asyncopenstackclient.auth.AuthPassword.get_token', side_effect=mock_get_token_results).start()
+        get_token_mock = patch('asyncopenstackclient.auth.AuthPassword.get_token', new=MagicMock()).start()
+        get_token_mock.side_effect = mock_get_token_results
         patch('asyncopenstackclient.auth.time', side_effect=mock_time_results).start()
 
         # first time token should be None and get_token shall be called

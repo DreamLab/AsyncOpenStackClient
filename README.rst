@@ -35,7 +35,7 @@ Usage
     from asyncopenstackclient import NovaClient, GlanceClient, CinderClient, AuthPassword
 
     # you can either pass credentials explicitly (as shown below)
-    # or use enviormental variables from OpenStack RC file
+    # or use environmental variables from OpenStack RC file
     # https://docs.openstack.org/mitaka/cli-reference/common/cli_set_environment_variables_using_openstack_rc.html
     auth = AuthPassword(
         auth_url='https://keystone:5999/v3'
@@ -44,6 +44,15 @@ Usage
         user_domain_name='default',
         project_domain_name='foo.bar'
     )
+
+    # alternatively you can also use application_credentials to authenticate with the OpenStack Keystone API
+    # https://docs.openstack.org/keystone/queens/user/application_credentials.html
+    alternative_auth = AuthPassword(
+        auth_url='https://keystone:5999/v3'
+        application_credential_id="ID",
+        application_credential_secret="SECRET"
+    )
+
     nova = NovaClient(session=auth)
     glance = GlanceClient(session=auth)
     cinder = CinderClient(session=auth)

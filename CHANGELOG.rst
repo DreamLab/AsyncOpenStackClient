@@ -2,6 +2,12 @@ Changelog
 =========
 
 
+0.9.0 (2022-06-06)
+------------------
+
+* Fixed: upgrade urllib3
+* Feature: support for application credentials
+  
 0.8.2 (2021-03-28)
 ------------------
 

@@ -2,7 +2,7 @@ import os
 from aioresponses import aioresponses
 from aiounittest import AsyncTestCase, futurized
 from asyncopenstackclient import AuthPassword
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 
 class TestAuth(AsyncTestCase):
@@ -19,33 +19,63 @@ class TestAuth(AsyncTestCase):
                 del os.environ[name]
 
     async def test_create_object(self):
-        expected_payload = {'auth': {
+        expected_payload_password = {'auth': {
             'identity': {'methods': ['password'], 'password': {'user': {
                 'domain': {'name': 'm_user_domain'},
                 'name': 'm_user', 'password': 'm_pass'
             }}},
             'scope': {'project': {'domain': {'name': 'm_project_domain'}, 'name': 'm_project'}}
         }}
-        self.assertEqual(self.auth._auth_payload, expected_payload)
-        self.assertEqual(self.auth._auth_endpoint, 'http://url/auth/tokens')
-        self.assertTrue('Content-Type' in self.auth.headers)
+
+        expected_payload_application_credential = {'auth': {
+            'identity': {'methods': ['application_credential'],
+                         'application_credential': {'id': 'm_app_id',
+                                                    'secret': 'm_app_secret'}}
+        }}
+
+        auth_args_application_credentials = ('http://url', None, None, None, None,
+                                             None, 'm_app_id', 'm_app_secret')
+
+        auth_application_credentials = AuthPassword(*auth_args_application_credentials)
+
+        for auth, expected_payload in ((self.auth, expected_payload_password),
+                                       (auth_application_credentials, expected_payload_application_credential)):
+            self.assertEqual(auth._auth_payload, expected_payload)
+            self.assertEqual(auth._auth_endpoint, 'http://url/auth/tokens')
+            self.assertTrue('Content-Type' in auth.headers)
 
     async def test_create_object_use_environ(self):
-        expected_payload = {'auth': {
+        expected_payload_password = {'auth': {
             'identity': {'methods': ['password'], 'password': {'user': {'domain': {'name': 'udm'}, 'name': 'uuu', 'password': 'ppp'}}},
             'scope': {'project': {'domain': {'name': 'udm'}, 'name': 'prj'}}
         }}
-        env = {
+        env_password = {
             'OS_AUTH_URL': 'https://keystone/v3',
             'OS_PASSWORD': 'ppp', 'OS_USERNAME': 'uuu',
             'OS_USER_DOMAIN_NAME': 'udm', 'OS_PROJECT_NAME': 'prj'
         }
 
-        with patch.dict('os.environ', env, clear=True):
-            auth = AuthPassword()
-        self.assertEqual(auth._auth_payload, expected_payload)
-        self.assertEqual(auth._auth_endpoint, 'https://keystone/v3/auth/tokens')
-        self.assertTrue('Content-Type' in auth.headers)
+        expected_payload_application_credentials = {'auth': {
+            'identity': {'methods': ['application_credential'],
+                         'application_credential': {'id': 'iid',
+                                                    'secret': 'ssecret'
+                                                    }
+                         }
+        }}
+        env_application_credentials = {
+            'OS_AUTH_URL': 'https://keystone/v3',
+            'OS_APPLICATION_CREDENTIAL_ID': 'iid',
+            'OS_APPLICATION_CREDENTIAL_SECRET': 'ssecret',
+            'OS_USER_DOMAIN_NAME': 'udm', 'OS_PROJECT_NAME': 'prj'
+        }
+
+        for env, expected_payload in ((env_password, expected_payload_password),
+                                      (env_application_credentials, expected_payload_application_credentials)):
+            with patch.dict('os.environ', env, clear=True):
+                auth = AuthPassword()
+            self.assertEqual(auth._auth_payload, expected_payload)
+            self.assertEqual(auth._auth_endpoint, 'https://keystone/v3/auth/tokens')
+            self.assertTrue('Content-Type' in auth.headers)
 
     async def test_get_token(self):
         body = {
@@ -107,7 +137,8 @@ class TestAuth(AsyncTestCase):
             1100
         ]
 
-        patch('asyncopenstackclient.auth.AuthPassword.get_token', side_effect=mock_get_token_results).start()
+        get_token_mock = patch('asyncopenstackclient.auth.AuthPassword.get_token', new=MagicMock()).start()
+        get_token_mock.side_effect = mock_get_token_results
         patch('asyncopenstackclient.auth.time', side_effect=mock_time_results).start()
 
         # first time token should be None and get_token shall be called

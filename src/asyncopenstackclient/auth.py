@@ -15,6 +15,8 @@ class AuthModel:
         self._project_id = None
         self._project_name = None
         self._region_name = None
+        self._application_credential_id = None
+        self._application_credential_secret = None
 
     async def authenticate(self):
         raise NotImplementedError
@@ -51,10 +53,20 @@ class AuthModel:
     def os_region_name(self):
         return self._region_name or os.environ.get('OS_REGION_NAME')
 
+    @property
+    def os_application_credential_id(self):
+        return self._application_credential_id or os.environ.get('OS_APPLICATION_CREDENTIAL_ID')
+
+    @property
+    def os_application_credential_secret(self):
+        return self._application_credential_secret or os.environ.get('OS_APPLICATION_CREDENTIAL_SECRET')
+
 
 class AuthPassword(AuthModel):
 
-    def __init__(self, auth_url=None, username=None, password=None, project_name=None, user_domain_name=None, project_domain_name=None):
+    def __init__(self, auth_url=None, username=None, password=None, project_name=None,
+                 user_domain_name=None, project_domain_name=None,
+                 application_credential_id=None, application_credential_secret=None):
         super().__init__()
         self._auth_url = auth_url
         self._username = username
@@ -62,6 +74,8 @@ class AuthPassword(AuthModel):
         self._project_name = project_name
         self._user_domain_name = user_domain_name
         self._project_domain_name = project_domain_name
+        self._application_credential_id = application_credential_id
+        self._application_credential_secret = application_credential_secret
 
         self._auth_endpoint = self.os_auth_url + '/auth/tokens'
         self.token = None
@@ -69,33 +83,53 @@ class AuthPassword(AuthModel):
         self.headers = {
             'Content-Type': 'application/json'
         }
-        self._auth_payload = {
-            'auth': {
-                'identity': {
-                    'methods': ['password'],
-                    'password': {
-                        'user': {
-                            'domain': {
-                                'name': self.os_user_domain_name
-                            },
-                            'name': self.os_username,
-                            'password': self.os_password
-                        }
-                    }
-                },
-                'scope': {
-                    "project": {
-                        "domain": {
-                            "name": self.os_project_domain_name
-                        },
-                        "name": self.os_project_name
-                    }
-                }
-            }
-        }
+
+        self._auth_payload = {'auth': {}}
+        for key_from_property in (self._identity, self._scope):
+            self._auth_payload['auth'].update(key_from_property)
 
     def is_token_valid(self):
         return self.token_expires_at - time() > 0
+
+    @property
+    def _identity(self):
+        if self.os_application_credential_id and self.os_application_credential_secret:
+            return {"identity": {
+                "methods": ["application_credential"],
+                "application_credential": {
+                    "id": self.os_application_credential_id,
+                    "secret": self.os_application_credential_secret
+                }
+            }
+            }
+        else:
+            return {"identity": {
+                'methods': ['password'],
+                'password': {
+                    'user': {
+                        'domain': {
+                            'name': self.os_user_domain_name
+                        },
+                        'name': self.os_username,
+                        'password': self.os_password
+                    }
+                }
+            }}
+
+    @property
+    def _scope(self):
+        if self.os_application_credential_id and self.os_application_credential_secret:
+            # The scope is automatically determined from the application_credential
+            return {}
+        else:
+            return {"scope": {
+                "project": {
+                    "domain": {
+                        "name": self.os_project_domain_name
+                    },
+                    "name": self.os_project_name
+                }
+            }}
 
     async def get_token(self):
         async with aiohttp.ClientSession() as session:
